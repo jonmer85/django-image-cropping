@@ -17,6 +17,7 @@ install:
   - pip install -q pillow==2.1 --use-mirrors
   - pip install -q selenium==2.37.2 --use-mirrors
   - pip install -q easy_thumbnails==1.4 --use-mirrors
+  - pip install coverage
   - pip install -q -e .
 notifications:
   email: false
@@ -24,4 +25,8 @@ before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
 script:
-  - python setup.py test
+  - coverage run --source=image_cropping setup.py test
+after_success:
+  - coverage report
+  - pip install --quiet python-coveralls
+  - coveralls
